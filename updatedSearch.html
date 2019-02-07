@@ -1,0 +1,156 @@
+<html lang=en>
+
+
+
+<p><strong>Table of Contents:</strong></p>
+
+<ol>            
+<li><a href='#introduction'>Introduction</a></li>
+<li><a href='#what-is-recyclerview'>What is SearchView & RecyclerView?</a></li>
+
+<li>
+An Example:
+<br>
+<ol>
+
+<li><a href='#dependencies' target = "_blank" rel = "nofollow">Dependencies</a></li>
+<li><a href='#ActivityLayout' target = "_blank" rel = "nofollow">Designing Activity Layout</a></li>
+<li><a href='#model' target = "_blank" rel = "nofollow">Model</a></li>
+<li><a href='#ListLayout' target = "_blank" rel = "nofollow">Designing List Layout</a></li>
+<li><a href='#ImplementingSearch' target = "_blank" rel = "nofollow">Implementing Search in Adapter class</a></li>
+<li><a href='#RecyclerviewAdapter' target = "_blank" rel = "nofollow">Complete Recyclerview Adapter Class</a></li>
+<li><a href='#Layoutmanager' target = "_blank" rel = "nofollow">Adding the Recyclerview in Activity</a></li>
+<li><a href='#SearchView' target = "_blank" rel = "nofollow">onQueryTextChangeListener</a></li>
+
+</ol>
+</ol>
+</li>
+</ul>
+<br>
+<img class="card-img-top"
+src = "http://127.0.0.1:8000/media/blog/22/demo.gif" alt="Card image cap">
+<br><br>
+
+<h3 id='introduction'>Introduction</h3>
+<br>
+In this blog I'm going to show you how to filter a RecyclerView using a SearchView on Android<br><br><br>
+
+
+<h3 id='what-is-searchview'>What is a SearchView?</h3>
+<br>
+
+<b>SearchView : </b>A SearchView is a widget used to capture text input. Usually it gets placed inside a Toolbar. That text input can then be used for a number of different tasks. In this blog post I'm going to show you how to use a SearchView to filter results in a RecyclerView.
+<br><br>
+For more information on RecyclerView's, check out this blog post: <a href = "https://codingwithmitch.com/blog/android-recyclerview/"
+target = "_blank">RecyclerView</a>
+<br><br><br>
+
+
+<h3 id='dependencies'>Dependencies</h3>
+<br>
+Open build.gradle (Module:app) and add RecyclerView dependency.
+<br><br>
+<script src="https://gist.github.com/mohak1283/61d344fc75130381999215c483772207.js"></script>
+<br>
+Make sure you have the latest version of dependencies. You can check the latest version <a href="https://developer.android.com/guide/topics/ui/layout/recyclerview#structure" target = "_blank" rel = "nofollow">here</a>
+<br><br><br>
+
+
+<h3 id='ActivityLayout'>Designing MainActivity Layout</h3>
+<br>
+Add the following code in your activity_main.xml file. This layout contains SearchView and a RecyclerView. SearchView is a widget that provides a user interface for the user to enter a search query and submit a request to a search provider<br><br>
+<script src="https://gist.github.com/mohak1283/06b65a375c33e0fec4d49e18f475ae53.js"></script>
+<br><br><br>
+
+
+<h3 id='model'>Model</h3>
+<br>
+Make a model class Name.java and put the following code inside it. This model class denotes name as the data member which contains the animal name<br><br>
+<script src="https://gist.github.com/mohak1283/cab30dc579c12ce28bf35c23ef4cb981.js"></script>
+
+<br><br><br>
+
+
+<h3 id='ListLayout'>Designing List Layout</h3>
+<br>
+To display the Animals Name on the screen, we need to design the layout of the list item. This layout file contains the one TextView which will display the name of the Animal 
+<br><br>
+
+<script src="https://gist.github.com/mohak1283/61f667ff196613775a3373f0fa8fe34b.js"></script>
+<br><br><br>
+
+
+<h3 id='ImplementingSearch'>Implementing Search in Adapter class</h3>
+<br>
+The First step is to implements the Filterable interface and override the getFilter() method and Declare the two List of type "Name" class. The first list is an initial list which contains all the elements and the second list (as the name suggests) will contain the items which are filtered according to the query typed in the Searchview and pass it in the constructor.
+<br><br><br>
+
+<script src="https://gist.github.com/mohak1283/0321e63655555cfe2003279b01bff620.js"></script>
+<br><br>
+
+The second step is to write search operation logic in getFilter() method. Inside getFilter() method, return an instance of Filter which will then Override two methods named performFiltering() and publishResults().
+<br><br>
+<li><b>performFiltering() : </b>
+<br><br>
+ This Method is invoke in a worker thread and it is used to filter the results according to the constraint specified. The main logic inside this method is that we are going through each object of Name class inside nameList and comparing the name of the animal with the query typed, If both becomes equal then we are adding the updated elements inside the new List named "filteredList" and assigning the "filteredList" to "filteredNameList" and at last we are returning the filtered results to the publishResults() method.
+<br><br>
+</li>
+<li><b>publishResults() : </b>
+<br><br>
+This method is invoked in the UI thread and it is used to publish the filtering results in the user interface. Inside this method, we are assigning the value of filtered list to the "filteredNameList" and notifying the observers using notifyDataSetChanged() method.
+</li>
+</ul>
+<br>
+<script src="https://gist.github.com/mohak1283/acee963a0488bd162264e2deba74725b.js"></script>
+<br><br><br>
+
+
+
+<h3 id='RecyclerviewAdapter'>Complete Recyclerview Adapter Class</h3>
+<br>
+This is a complete Adapter class which contains the search logic which is explained above.
+<script src="https://gist.github.com/mohak1283/ca5d519f04a48f5bc16cd088370f8d79.js"></script>
+<br><br><br>
+
+
+<h3 id='Layoutmanager'>Adding the Recyclerview in Activity</h3>
+<br>
+Now, Declare all these objects inside MainActivity before onCreate() method and then, we will add some Animal Names to the list and set up the Adapter with RecyclerView inside onCreate() method.<br><br>
+<script src="https://gist.github.com/mohak1283/b0baed03ffc9be32a8be249ac8138204.js"></script>
+<br><br><br>
+
+<h3 id='SearchView'>onQueryTextChangeListener</h3>
+<br>
+Finallly, we will setup the SearchView inside the MainActivity. Paste the below code inside the onCreate() method of MainActivity. We are attaching the listener on SearchView and Overrriding two methods.<br><br>
+<ul>
+<li><b>onQueryTextSubmit(String queryString) : </b>
+<br><br>
+This method is invoked when then the search button is pressed to submit the query. In this method, we are passing the queryString to the filter() method which will start filtering the results according to the query passed.
+<br><br>
+</li>
+<li><b>onQueryTextChange(String queryString) : </b>
+<br><br>
+This method is invoked when something is changed in the Searchview. In this method also, we are passing the queryString to the filter() method which will start filtering the results according to the query passed.
+</li>
+</ul>
+<br>
+
+<script src="https://gist.github.com/mohak1283/6f0446110fddd161546b14da42153157.js"></script>
+<br><br><br>
+
+
+
+
+
+That's All! Happy Coding!
+<br><br><br>
+
+
+The complete code is available <a href="https://github.com/mohak1283/SearchRecyclerView" target="_blank" rel="nofollow">here</a>.
+<br><br><br>
+
+
+
+
+
+</html>
