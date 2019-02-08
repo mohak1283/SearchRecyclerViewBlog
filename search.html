@@ -7,7 +7,7 @@
 <ol>  
 <li><a href='#demo'>Demo</a></li>          
 <li><a href='#introduction'>Introduction</a></li>
-<li><a href='#what-is-recyclerview'>What is SearchView & RecyclerView?</a></li>
+<li><a href='#what-is-searchview'>What is a SearchView?</a></li>
 
 <li>
 An Example:
@@ -96,9 +96,9 @@ The First step is to implements the Filterable interface and override the getFil
 <script src="https://gist.github.com/mohak1283/0321e63655555cfe2003279b01bff620.js"></script>
 <br><br>
 
-<ul>
 The second step is to write search operation logic in getFilter() method. Inside getFilter() method, return an instance of Filter which will then Override two methods named performFiltering() and publishResults().
 <br><br>
+<ul>
 <li><b>performFiltering() : </b>
 <br><br>
  This Method is invoke in a worker thread and it is used to filter the results according to the constraint specified. The main logic inside this method is that we are going through each object of Name class inside nameList and comparing the name of the animal with the query typed, If both becomes equal then we are adding the updated elements inside the new List named "filteredList" and assigning the "filteredList" to "filteredNameList" and at last we are returning the filtered results to the publishResults() method.
